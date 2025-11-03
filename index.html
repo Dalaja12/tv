@@ -16,6 +16,7 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
+      position: relative;
     }
     #player {
       width: 80%;
@@ -33,6 +34,21 @@
       font-weight: bold;
       box-shadow: 0 0 10px rgba(255,0,0,0.6);
     }
+    #soundBtn {
+      position: absolute;
+      bottom: 30px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: 2px solid white;
+      border-radius: 10px;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+    #soundBtn:hover {
+      background: rgba(255,255,255,0.5);
+    }
   </style>
 </head>
 <body>
@@ -43,34 +59,40 @@
     allowfullscreen>
   </iframe>
 
+  <button id="soundBtn">🔊 Activar sonido</button>
+
   <script>
-    // Lista de videos (de distintos canales)
     const videos = [
-      "GY20LOpt7zw", // ejemplo 1
-      "M7lc1UVf-VE", // ejemplo 2
-      "hY7m5jjJ9mM"  // ejemplo 3
+      "RPlw7JCLZNg",
+      "6J9HEwk_YTc",
+      "hY7m5jjJ9mM"
     ];
 
-    // Duraciones aproximadas en milisegundos (de cada video)
     const duraciones = [
-      213000, // 3:33
-      200000, // 3:20
-      250000  // 4:10
+      213000,
+      200000,
+      250000
     ];
 
     let index = 0;
     const player = document.getElementById("player");
+    const btn = document.getElementById("soundBtn");
 
-    function reproducirVideo(i) {
-      player.src = `https://www.youtube.com/embed/${videos[i]}?autoplay=1&mute=1&controls=0`;
+    function reproducirVideo(i, muted = true) {
+      player.src = `https://www.youtube.com/embed/${videos[i]}?autoplay=1&mute=${muted ? 1 : 0}&controls=0`;
       setTimeout(() => {
         index = (index + 1) % videos.length;
-        reproducirVideo(index);
+        reproducirVideo(index, muted);
       }, duraciones[i]);
     }
 
-    // Iniciar el ciclo
     reproducirVideo(index);
+
+    // Quitar el mute al hacer clic
+    btn.addEventListener("click", () => {
+      reproducirVideo(index, false);
+      btn.style.display = "none";
+    });
   </script>
 </body>
 </html>
